@@ -23,5 +23,11 @@ public class Usuario {
     @Column(name = "perfil")
     private String perfil;
 
+    public Usuario(DadosCadastroUsuario dados) {
+        this.nome = dados.nome();
+        this.email = dados.email();
+        this.senha = dados.senha();
+        this.perfil = dados.perfil();
+    }
 
 }

@@ -19,4 +19,13 @@ public class Curso {
     private Long id;
     private String nome;
     private String categoria;
+
+    public Curso(DadosCadastroCurso dados) {
+        this.nome = dados.nome();;
+        this.categoria = dados.categoria();
+    }
+
+
+
+
 }

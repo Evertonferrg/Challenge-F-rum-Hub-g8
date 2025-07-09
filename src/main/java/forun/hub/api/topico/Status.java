@@ -1,6 +1,9 @@
 package forun.hub.api.topico;
 
 public enum Status {
-    RESPONDIDA,
-    NAO_RESPONDIDA
+    NAO_RESPONDIDA,
+    NAO_SOLUCIONADO,
+    SOLUCIONADO,
+    FECHADO,
+    ABERTO
 }
