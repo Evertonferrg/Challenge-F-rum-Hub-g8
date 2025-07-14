@@ -1,14 +1,13 @@
 package forun.hub.api.usuarios;
 
+import forun.hub.api.perfis.Perfil;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "usuarios")
 @Entity(name = "Usuario")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -20,14 +19,10 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
-    @Column(name = "perfil")
-    private String perfil;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "perfil_id")
+    private Perfil perfil;
 
-    public Usuario(DadosCadastroUsuario dados) {
-        this.nome = dados.nome();
-        this.email = dados.email();
-        this.senha = dados.senha();
-        this.perfil = dados.perfil();
-    }
+
 
 }

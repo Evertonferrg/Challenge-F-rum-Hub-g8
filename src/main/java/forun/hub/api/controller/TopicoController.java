@@ -49,6 +49,26 @@ public class TopicoController {
 
     }
 
+    @GetMapping
+    public ResponseEntity<Page<DadosListagemTopico>> listar(@PageableDefault(size = 10,
+            sort = "dataCriacao", direction = Sort.Direction.ASC) Pageable paginacao) {
+        Page<DadosListagemTopico> page = repository.findAllByAtivoTrue(paginacao).map(
+                DadosListagemTopico::new);
+        return ResponseEntity.ok(page);
+    }
+
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DadosDetalhamentoTopico> detalhar(@PathVariable Long id){
+        var topicoOptional = repository.findById(id);
+        if (topicoOptional.isPresent()){
+            return ResponseEntity.ok(new DadosDetalhamentoTopico(topicoOptional.get()));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/buscar")
     public Page<DadosListagemTopico> buscarPorCursoEAno(
             @RequestParam(required = false) String nomeCurso,
@@ -58,5 +78,20 @@ public class TopicoController {
 
        return topicoService.buscarPorCursoEAno(nomeCurso,ano, paginacao );
     }
+
+    @PutMapping
+    @Transactional
+    public void atualizar(@RequestBody @Valid DadosAtualizacaoTopico dados) {
+        var topico = repository.getReferenceById(dados.id());
+        topico.atualizarInformacoes(dados);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void excluir(@PathVariable Long id){
+       var topico = repository.getReferenceById(id);
+       topico.excluir();
+    }
+
 
 }

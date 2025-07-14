@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
-@EntityScan({"forun.hub.api.topico", "forun.hub.api.usuarios", "forun.hub.api.curso"})
+@EntityScan(basePackages = {"forun.hub.api.topico", "forun.hub.api.usuarios", "forun.hub.api.curso","forun.hub.api.resposta", "forun.hub.api.perfis"})
 public class ApiApplication {
 
 	public static void main(String[] args) {

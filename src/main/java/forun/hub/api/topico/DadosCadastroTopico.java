@@ -10,16 +10,19 @@ public record DadosCadastroTopico(
 
         @NotBlank
         String titulo,
+
         @NotBlank
         String mensagem,
-        @NotNull
-        LocalDateTime data,
+
         @NotNull
         Status status,
+
         @NotNull
         Long autorId,
+
         @NotNull
         Long cursoId,
+
         @NotBlank
         String resposta) {
 }

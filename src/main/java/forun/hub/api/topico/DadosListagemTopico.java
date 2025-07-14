@@ -2,10 +2,25 @@ package forun.hub.api.topico;
 
 import java.time.LocalDateTime;
 
-public record DadosListagemTopico(String titulo, String mensagem, LocalDateTime dataCriacao, String autor, String estado,
-                                  String curso, String resposta){
+public record DadosListagemTopico(
+        Long id,
+        String titulo,
+        String mensagem,
+        LocalDateTime dataCriacao,
+        Status status,
+        String autorNome,
+        String cursoNome){
 
     public DadosListagemTopico(Topico topico){
-        this(topico.getTitulo(), topico.getMensagem(), topico.getDataCriacao(),topico.getAutor().getNome(), topico.getStatus().name(),topico.getCurso().getNome(), topico.getResposta());
+        this(
+                topico.getId(),
+                topico.getTitulo(),
+                topico.getMensagem(),
+                topico.getDataCriacao(),
+                topico.getStatus(),
+                topico.getAutor().getNome(),
+                topico.getCurso().getNome()
+        );
+
     }
 }

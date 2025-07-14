@@ -3,17 +3,15 @@ package forun.hub.api.resposta;
 import forun.hub.api.topico.Topico;
 import forun.hub.api.usuarios.Usuario;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Table(name = "respostas")
 @Entity(name = "Resposta")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")

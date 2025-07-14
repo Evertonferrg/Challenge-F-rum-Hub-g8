@@ -1,10 +1,7 @@
 package forun.hub.api.usuarios;
 
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public record DadosCadastroUsuario(
         @NotBlank(message = "{nome.obrigatorio}")
@@ -19,8 +16,8 @@ public record DadosCadastroUsuario(
         @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{6,20}$",
                 message = "{senha.formato}")
         String senha,
-        @NotBlank(message = "{perfil.obrigatorio}")
-        String perfil
+        @NotNull(message = "{perfil.obrigatorio}")
+        Long perfilId
         ){
 
 
