@@ -1,12 +1,10 @@
 package forun.hub.api.controller;
 
-import forun.hub.api.perfil.PerfilRepository;
-import forun.hub.api.perfis.Perfil;
-import forun.hub.api.resposta.DadosDetalhamentoResposta;
-import forun.hub.api.usuarios.*;
+import forun.hub.api.domain.perfis.PerfilRepository;
+import forun.hub.api.domain.perfis.Perfil;
+import forun.hub.api.domain.usuarios.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

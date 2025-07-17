@@ -1,10 +1,10 @@
 package forun.hub.api.controller;
 
-import forun.hub.api.curso.Curso;
-import forun.hub.api.curso.CursoRepository;
-import forun.hub.api.topico.*;
-import forun.hub.api.usuarios.Usuario;
-import forun.hub.api.usuarios.UsuarioRepository;
+import forun.hub.api.domain.curso.Curso;
+import forun.hub.api.domain.curso.CursoRepository;
+import forun.hub.api.domain.topico.*;
+import forun.hub.api.domain.usuarios.Usuario;
+import forun.hub.api.domain.usuarios.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("topicos")
@@ -35,8 +34,8 @@ public class TopicoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Void> cadastrar(@RequestBody @Valid DadosCadastroTopico dados) {
-        Usuario autor = usuarioRepository.findById(dados.autorId())
+    public ResponseEntity<DadosDetalhamentoTopico> cadastrar(@RequestBody @Valid DadosCadastroTopico dados, UriComponentsBuilder uriBuilder) {
+        var autor = usuarioRepository.findById(dados.autorId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         Curso curso = cursoRepository.findById(dados.cursoId())
@@ -45,16 +44,18 @@ public class TopicoController {
         Topico topico = new Topico(dados, autor, curso);
         repository.save(topico);
 
-        return ResponseEntity.ok().build();
+        var uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoTopico(topico));
 
     }
 
     @GetMapping
     public ResponseEntity<Page<DadosListagemTopico>> listar(@PageableDefault(size = 10,
             sort = "dataCriacao", direction = Sort.Direction.ASC) Pageable paginacao) {
-        Page<DadosListagemTopico> page = repository.findAllByAtivoTrue(paginacao).map(
+         Page<DadosListagemTopico> page = repository.findAllByAtivoTrue(paginacao).map(
                 DadosListagemTopico::new);
-        return ResponseEntity.ok(page);
+         return ResponseEntity.ok(page);
     }
 
 
@@ -81,17 +82,23 @@ public class TopicoController {
 
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody @Valid DadosAtualizacaoTopico dados) {
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoTopico dados) {
         var topico = repository.getReferenceById(dados.id());
         topico.atualizarInformacoes(dados);
+
+        return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public void excluir(@PathVariable Long id){
+    public ResponseEntity excluir(@PathVariable Long id){
        var topico = repository.getReferenceById(id);
        topico.excluir();
+
+       return ResponseEntity.noContent().build();
     }
+
+
 
 
 }

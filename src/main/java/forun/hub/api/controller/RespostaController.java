@@ -1,11 +1,11 @@
 package forun.hub.api.controller;
 
-import forun.hub.api.resposta.DadosCadastroResposta;
-import forun.hub.api.resposta.DadosDetalhamentoResposta;
-import forun.hub.api.resposta.Resposta;
-import forun.hub.api.resposta.RespostaRepository;
-import forun.hub.api.topico.TopicoRepository;
-import forun.hub.api.usuarios.UsuarioRepository;
+import forun.hub.api.domain.resposta.DadosCadastroResposta;
+import forun.hub.api.domain.resposta.DadosDetalhamentoResposta;
+import forun.hub.api.domain.resposta.Resposta;
+import forun.hub.api.domain.resposta.RespostaRepository;
+import forun.hub.api.domain.topico.TopicoRepository;
+import forun.hub.api.domain.usuarios.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

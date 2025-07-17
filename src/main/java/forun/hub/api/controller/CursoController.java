@@ -1,9 +1,9 @@
 package forun.hub.api.controller;
 
-import forun.hub.api.curso.Curso;
-import forun.hub.api.curso.CursoRepository;
-import forun.hub.api.curso.DadosCadastroCurso;
-import forun.hub.api.curso.DadosListagemCurso;
+import forun.hub.api.domain.curso.Curso;
+import forun.hub.api.domain.curso.CursoRepository;
+import forun.hub.api.domain.curso.DadosCadastroCurso;
+import forun.hub.api.domain.curso.DadosListagemCurso;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
