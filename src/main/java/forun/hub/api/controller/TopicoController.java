@@ -3,6 +3,8 @@ package forun.hub.api.controller;
 import forun.hub.api.domain.curso.Curso;
 import forun.hub.api.domain.curso.CursoRepository;
 import forun.hub.api.domain.topico.*;
+import forun.hub.api.domain.usuarios.DadosAtualizacaoUsuario;
+import forun.hub.api.domain.usuarios.DadosDetalhamentoUsuario;
 import forun.hub.api.domain.usuarios.Usuario;
 import forun.hub.api.domain.usuarios.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -80,22 +82,18 @@ public class TopicoController {
        return topicoService.buscarPorCursoEAno(nomeCurso,ano, paginacao );
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoTopico dados) {
-        var topico = repository.getReferenceById(dados.id());
+    public ResponseEntity<DadosDetalhamentoTopico> atualizar(
+            @PathVariable Long id,
+            @RequestBody @Valid DadosAtualizacaoTopico dados) {
+
+
+        var topico = repository.getReferenceById(id);
         topico.atualizarInformacoes(dados);
 
+
         return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
-    }
-
-    @DeleteMapping("/{id}")
-    @Transactional
-    public ResponseEntity excluir(@PathVariable Long id){
-       var topico = repository.getReferenceById(id);
-       topico.excluir();
-
-       return ResponseEntity.noContent().build();
     }
 
 

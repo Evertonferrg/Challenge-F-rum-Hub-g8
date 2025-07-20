@@ -2,25 +2,31 @@ package forun.hub.api.controller;
 
 import forun.hub.api.domain.perfis.PerfilRepository;
 import forun.hub.api.domain.perfis.Perfil;
+
 import forun.hub.api.domain.usuarios.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("Usuarios")
+@RequestMapping("usuarios")
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository repository;
-
+    private UsuarioRepository usuarioRepository;
+    @Autowired
     private PerfilRepository perfilRepository;
+    @Autowired
+    private  UsuarioService usuarioService;
+
+
 
     @PostMapping
     @Transactional
@@ -31,22 +37,63 @@ public class UsuarioController {
                .orElseThrow(() -> new IllegalArgumentException("Perfil não encontrado com o ID: " + dados.perfilId()));
 
 
-       Usuario usuario = new Usuario(null, dados.nome(), dados.email(), dados.senha(), perfilAssociado);
-               repository.save(usuario);
+       Usuario usuario = new Usuario(dados, perfilAssociado);
+               usuarioRepository.save(usuario);
 
         var uri = uriBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosListagemUsuario(usuario));
 
     }
 
-    public Page<DadosListagemUsuario> listar (@PageableDefault(page = 0, size = 10, sort = {"nome"}) Pageable paginacao){
-        return repository.findAll(paginacao).map(DadosListagemUsuario::new);
+    @GetMapping
+    public ResponseEntity<Page<DadosListagemUsuario>> listar(@PageableDefault(size = 10) Pageable paginacao) {
+        Page<Usuario> usuarios = usuarioRepository.findAllByAtivoTrue(paginacao);
+        Page<DadosListagemUsuario> page = usuarios.map(DadosListagemUsuario::new);
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DadosDetalhamentoUsuario> detalhar(@PathVariable Long id){
-        var usuario = repository.findById(id)
+        var usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
     }
+
+    @GetMapping("/buscar")
+    public Page<DadosListagemUsuario> buscarPorCursoEAno(
+            @RequestParam(required = false) String nomeCurso,
+            @RequestParam(required = false) Integer ano,
+            @PageableDefault(size = 10, sort = "dataCriacao", direction = Sort.Direction.ASC) Pageable paginacao
+    ) {
+
+
+        return usuarioService.buscarPorCursoEAno(nomeCurso,ano, paginacao );
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<DadosDetalhamentoUsuario> atualizar(
+            @PathVariable Long id,
+            @RequestBody @Valid DadosAtualizacaoUsuario dados) {
+
+        var usuarioOptional = usuarioRepository.findById(id);
+        if (usuarioOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var usuario = usuarioOptional.get();
+        usuario.atualizarInformacoes(dados);
+
+        return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
+    }
+
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id){
+        var topico = usuarioRepository.getReferenceById(id);
+        topico.excluir();
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

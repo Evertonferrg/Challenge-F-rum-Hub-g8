@@ -1,4 +1,12 @@
 package forun.hub.api.domain.resposta;
 
-public record DadosAtualizacaoResposta() {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record DadosAtualizacaoResposta(
+
+        @NotNull
+        @NotBlank
+        String mensagem
+) {
 }

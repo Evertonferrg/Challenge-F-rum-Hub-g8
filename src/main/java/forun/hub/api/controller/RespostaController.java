@@ -1,9 +1,6 @@
 package forun.hub.api.controller;
 
-import forun.hub.api.domain.resposta.DadosCadastroResposta;
-import forun.hub.api.domain.resposta.DadosDetalhamentoResposta;
-import forun.hub.api.domain.resposta.Resposta;
-import forun.hub.api.domain.resposta.RespostaRepository;
+import forun.hub.api.domain.resposta.*;
 import forun.hub.api.domain.topico.TopicoRepository;
 import forun.hub.api.domain.usuarios.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -20,7 +17,7 @@ import java.net.URI;
 
 
 @RestController
-@RequestMapping("Respostas")
+@RequestMapping("respostas")
 public class RespostaController {
 
     @Autowired
@@ -34,34 +31,68 @@ public class RespostaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DadosDetalhamentoResposta> cadastrar (@RequestBody @Valid DadosCadastroResposta dados,
-                                                                UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<DadosDetalhamentoResposta> cadastrar(@RequestBody @Valid DadosCadastroResposta dados,
+                                                               UriComponentsBuilder uriBuilder) {
 
-        if (!topicoRepository.existsById(dados.topicoId())) {
+        if (!topicoRepository.existsById(dados.topicoId()) || !usuarioRepository.existsById(dados.autorId())) {
             return ResponseEntity.notFound().build();
         }
-        if (!usuarioRepository.existsById(dados.topicoId())) {
-            return ResponseEntity.notFound().build();
-        }
+
         var topico = topicoRepository.getReferenceById(dados.topicoId());
         var autor = usuarioRepository.getReferenceById(dados.autorId());
 
-        var resposta = new Resposta(dados.mensagem());
+        // Linha que chama o construtor que você adicionou
+        var resposta = new Resposta(dados.mensagem(), topico, autor);
         respostaRepository.save(resposta);
 
-        URI uri = uriBuilder.path("/respostas/{id}").buildAndExpand(resposta.getId()).toUri();
+        var uri = uriBuilder.path("/respostas/{id}").buildAndExpand(resposta.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalhamentoResposta(resposta));
     }
 
+
     @GetMapping
-    public ResponseEntity<Page<DadosDetalhamentoResposta>> listar(@PageableDefault(size = 10, sort = {"dataCriacao"})Pageable paginacao) {
+    public ResponseEntity<Page<DadosDetalhamentoResposta>> listar(@PageableDefault(size = 10, sort = {"dataCriacao"}) Pageable paginacao) {
         var page = respostaRepository.findAll(paginacao).map(DadosDetalhamentoResposta::new);
         return ResponseEntity.ok(page);
     }
 
+ 
     @GetMapping("/{id}")
     public ResponseEntity<DadosDetalhamentoResposta> detalhar(@PathVariable Long id) {
+        // Usa findById e Optional para um comportamento seguro e correto
+        var respostaOptional = respostaRepository.findById(id);
+        if (respostaOptional.isPresent()) {
+            return ResponseEntity.ok(new DadosDetalhamentoResposta(respostaOptional.get()));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<DadosDetalhamentoResposta> atualizar(
+            @PathVariable Long id,
+            @RequestBody @Valid DadosAtualizacaoResposta dados) {
+
+        if (!respostaRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
         var resposta = respostaRepository.getReferenceById(id);
+        resposta.setMensagem(dados.mensagem());
+
         return ResponseEntity.ok(new DadosDetalhamentoResposta(resposta));
+    }
+
+    // DELETE
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        if (!respostaRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        respostaRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

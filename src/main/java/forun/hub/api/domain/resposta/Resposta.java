@@ -25,12 +25,13 @@ public class Resposta {
     private Boolean solucao;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "topico_id")
+    @JoinColumn(name = "topico_id", nullable = false)
     private Topico topico;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "autor_id")
+    @JoinColumn(name = "autor_id", nullable = false)
     private Usuario autor;
+
 
     public Resposta(String mensagem) {
         this.mensagem = mensagem;
