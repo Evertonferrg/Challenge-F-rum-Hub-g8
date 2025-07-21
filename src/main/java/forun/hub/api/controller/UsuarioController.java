@@ -4,6 +4,7 @@ import forun.hub.api.domain.perfis.PerfilRepository;
 import forun.hub.api.domain.perfis.Perfil;
 
 import forun.hub.api.domain.usuarios.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("usuarios")
+@SecurityRequirement(name = "bearer-key")
 public class UsuarioController {
 
     @Autowired

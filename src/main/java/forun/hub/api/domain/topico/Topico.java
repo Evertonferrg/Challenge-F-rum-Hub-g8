@@ -26,6 +26,7 @@ public class Topico {
     private String titulo;
     private String mensagem;
 
+
     @CreationTimestamp
     @Column(name = "data_criacao", nullable = false, updatable = false)
     private LocalDateTime dataCriacao;
@@ -41,7 +42,11 @@ public class Topico {
     @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Resposta> respostas = new ArrayList<>();
 
-    private Boolean ativo;
+    @OneToOne(fetch =  FetchType.LAZY)
+    @JoinColumn(name = "solucao_id")
+    private Resposta solucao;
+    @Column(nullable = false)
+    private Boolean ativo = true;
 
     public Topico(DadosCadastroTopico dados, Usuario autor, Curso curso) {
         this.ativo = true;
@@ -50,7 +55,13 @@ public class Topico {
         this.status = dados.status();
         this.autor = autor;
         this.curso = curso;
+        this.dataCriacao = LocalDateTime.now();
 
+
+    }
+
+    public void setSolucao(Resposta solucao){
+        this.solucao = solucao;
     }
 
     public void atualizarInformacoes(@Valid DadosAtualizacaoTopico dados) {

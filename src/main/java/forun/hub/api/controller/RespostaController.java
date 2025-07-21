@@ -3,6 +3,7 @@ package forun.hub.api.controller;
 import forun.hub.api.domain.resposta.*;
 import forun.hub.api.domain.topico.TopicoRepository;
 import forun.hub.api.domain.usuarios.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("respostas")
+@SecurityRequirement(name = "bearer-key")
 public class RespostaController {
 
     @Autowired
@@ -29,22 +31,15 @@ public class RespostaController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private RespostaService respostaService;
+
     @PostMapping
     @Transactional
     public ResponseEntity<DadosDetalhamentoResposta> cadastrar(@RequestBody @Valid DadosCadastroResposta dados,
                                                                UriComponentsBuilder uriBuilder) {
 
-        if (!topicoRepository.existsById(dados.topicoId()) || !usuarioRepository.existsById(dados.autorId())) {
-            return ResponseEntity.notFound().build();
-        }
-
-        var topico = topicoRepository.getReferenceById(dados.topicoId());
-        var autor = usuarioRepository.getReferenceById(dados.autorId());
-
-        // Linha que chama o construtor que você adicionou
-        var resposta = new Resposta(dados.mensagem(), topico, autor);
-        respostaRepository.save(resposta);
-
+        var resposta = respostaService.cadastrar(dados);
         var uri = uriBuilder.path("/respostas/{id}").buildAndExpand(resposta.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalhamentoResposta(resposta));
     }

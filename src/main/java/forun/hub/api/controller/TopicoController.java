@@ -7,6 +7,7 @@ import forun.hub.api.domain.usuarios.DadosAtualizacaoUsuario;
 import forun.hub.api.domain.usuarios.DadosDetalhamentoUsuario;
 import forun.hub.api.domain.usuarios.Usuario;
 import forun.hub.api.domain.usuarios.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("topicos")
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
 
     @Autowired
@@ -96,6 +98,14 @@ public class TopicoController {
         return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
     }
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id){
+        var topico = repository.getReferenceById(id);
+        topico.excluir();
+
+        return ResponseEntity.noContent().build();
+    }
 
 
 

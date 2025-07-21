@@ -30,8 +30,9 @@ public class SecurityConfigurations {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
-                        // Adicione as regras para as rotas do seu fórum
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "swagger-ui.html", "/swagger-ui/**").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/topicos").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/topicos/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/topicos/**").authenticated()
@@ -40,6 +41,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.PUT, "/respostas/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/respostas/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/respostas/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/usuarios").authenticated()
                         .anyRequest().denyAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

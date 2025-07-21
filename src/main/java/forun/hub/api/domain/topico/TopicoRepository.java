@@ -11,7 +11,8 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
 
     @Query("""
             SELECT t FROM Topico t
-            WHERE (:nomeCurso IS NULL OR t.curso.nome = :nomeCurso)
+            WHERE t.ativo = true
+             AND (:nomeCurso IS NULL OR t.curso.nome = :nomeCurso)
               AND (:ano IS NULL OR YEAR(t.dataCriacao) = :ano)
             """)
     Page<Topico> buscarPorCursoEAno(
@@ -22,4 +23,9 @@ public interface TopicoRepository extends JpaRepository<Topico, Long> {
     boolean existsByTitulo(String titulo);
 
     Page<Topico> findAllByAtivoTrue(Pageable paginacao);
+
+    Boolean existsByTituloAndMensagem(String titulo, String mensagem);
+
+    @Query("SELECT t FROM Topico t WHERE t.ativo = true")
+    Page<Topico> findAllAtivos(Pageable pageable);
 }
