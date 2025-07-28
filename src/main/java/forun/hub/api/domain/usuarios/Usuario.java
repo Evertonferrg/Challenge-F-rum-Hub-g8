@@ -52,6 +52,10 @@ public class Usuario implements UserDetails {
         return List.of();
     }
 
+    public Usuario(String nome){
+        this.nome = nome;
+    }
+
 
     public Usuario(DadosCadastroUsuario dados, Perfil perfil) {
         this.nome = dados.nome();

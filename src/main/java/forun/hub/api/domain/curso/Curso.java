@@ -26,6 +26,12 @@ public class Curso {
         this.categoria = dados.categoria();
     }
 
+    public Curso(String nome) {
+        this.nome = nome;
+    }
+
+
+
 
 
 

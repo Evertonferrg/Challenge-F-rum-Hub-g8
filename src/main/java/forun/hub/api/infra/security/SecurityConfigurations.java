@@ -3,6 +3,7 @@ package forun.hub.api.infra.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableWebSecurity
+@Profile("!test")
 public class SecurityConfigurations {
 
     @Autowired
@@ -30,18 +32,21 @@ public class SecurityConfigurations {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers("/v3/api-docs/**", "swagger-ui.html", "/swagger-ui/**").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/topicos").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/topicos/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/topicos/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/topicos/**").authenticated()
+
                         .requestMatchers(HttpMethod.POST, "/respostas").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/respostas/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/respostas/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/respostas/**").authenticated()
+
                         .requestMatchers(HttpMethod.GET, "/usuarios").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/usuarios/**").hasRole("ADMIN") // <-- ADICIONE ESTA LINHA
+
                         .anyRequest().denyAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
