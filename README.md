@@ -56,6 +56,16 @@ Imagens dos Testes
   <img src="https://github.com/Evertonferrg/Challenge-F-rum-Hub-g8/blob/main/src/img/detalhar%20topico.png" width="600">
 </p>
 
+<h3 align="center">🔑 Login no Swagger</h3>
+<p align="center">
+  <img src="https://github.com/Evertonferrg/Challenge-F-rum-Hub-g8/blob/main/src/img/loginSwagger.png" width="600">
+</p>
+
+<h3 align="center">📝 Criar Tópico no Swagger</h3>
+<p align="center">
+  <img src="https://github.com/Evertonferrg/Challenge-F-rum-Hub-g8/blob/main/src/img/swaggerNovoTopico.png" width="600">
+</p>
+
 
 🛠 Tecnologias
 ----------------------------------------
