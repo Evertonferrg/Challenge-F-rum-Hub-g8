@@ -66,6 +66,11 @@ Imagens dos Testes
   <img src="https://github.com/Evertonferrg/Challenge-F-rum-Hub-g8/blob/main/src/img/swaggerNovoTopico.png" width="600">
 </p>
 
+<h3 align="center">📝Teste automatizado do projeto</h3>
+<p align="center">
+  <img src="https://github.com/Evertonferrg/Challenge-F-rum-Hub-g8/blob/main/src/img/testeautomatizado.webp" width="600">
+</p>
+
 
 🛠 Tecnologias
 ----------------------------------------
