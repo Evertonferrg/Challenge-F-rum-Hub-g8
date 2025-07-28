@@ -32,18 +32,29 @@ A documentação completa dos endpoints da API, incluindo exemplos de requisiç�
 
 🎬 Demonstração
 ----------------------------------------
-Aqui você pode ver o projeto em ação através de vídeos e imagens dos testes.
-
-Vídeo dos Testes
-(https://www.google.com/search?q=https://img.youtube.com/vi/SEU_ID_DO_VIDEO/0.jpg)](https://www.google.com/search?q=https://www.youtube.com/watch%3Fv%3DSEU_ID_DO_VIDEO)
-Substitua SEU_ID_DO_VIDEO pelo ID do seu vídeo do YouTube e o link pela URL completa do vídeo.
+Aqui você pode ver o projeto em ação através de imagens dos testes.
 
 Imagens dos Testes
-!(link-para-sua-imagem-1.png)
-Adicione aqui capturas de tela relevantes dos seus testes ou da execução da API.
 
-!(link-para-sua-imagem-2.png)
-Você pode adicionar quantas imagens forem necessárias para ilustrar os testes.
+<h3 align="center">🔐 Autenticação</h3>
+<p align="center">
+  <img src="https://github.com/Evertonferrg/Challenge-F-rum-Hub-g8/raw/main/src/img/autenticacao.png" width="600">
+</p>
+
+<h3 align="center">📝 Criar Tópico</h3>
+<p align="center">
+  <img src="https://github.com/Evertonferrg/Challenge-F-rum-Hub-g8/blob/main/src/img/registrar%20topico.png" width="600">
+</p>
+
+<h3 align="center">📝 Criar Resposta</h3>
+<p align="center">
+  <img src="https://github.com/Evertonferrg/Challenge-F-rum-Hub-g8/raw/main/src/img/criar%20resposta.png" width="600">
+</p>
+
+<h3 align="center">🔍 Detalhar Tópico</h3>
+<p align="center">
+  <img src="https://github.com/Evertonferrg/Challenge-F-rum-Hub-g8/blob/main/src/img/detalhar%20topico.png" width="600">
+</p>
 
 
 🛠 Tecnologias
