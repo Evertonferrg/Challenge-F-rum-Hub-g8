@@ -85,5 +85,6 @@ Lombok
 📝 Licença
 ----------------------------------------
 Projeto desenvolvido por [Alura](https://www.alura.com.br) e utilizado nos cursos de Spring Boot.
+
 Projeto desenvolvido por [Everton Ferreira Guedes].
 
